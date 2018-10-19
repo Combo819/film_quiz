@@ -88,7 +88,7 @@
                         <v-divider light></v-divider>
                         <v-card-actions class="pa-3">
                           <v-spacer></v-spacer>
-                          <v-btn depressed round dark color="teal lighten-3">转到豆瓣</v-btn>
+                          <v-btn depressed round dark color="teal lighten-3" :to="{name:'moive'}">展开</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-flex>

@@ -4,15 +4,31 @@ import HelloWorld from '@/components/HelloWorld'
 import WelcomePage from '@/components/welcomePage'
 import QuizPage from '@/components/QuizPage'
 import moive from '@/components/movie'
+import instruction from '@/components/instruction'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/moive',
       name: 'moive',
       component: moive
+    },
+    {
+      path: '/QuizPage',
+      name: 'QuizPage',
+      component: QuizPage
+    },
+    {
+      path: '/',
+      name: 'WelcomePage',
+      component: WelcomePage
+    },
+    {
+      path: '/instruction',
+      name: 'instrucion',
+      component: instruction
     }
   ]
 })
