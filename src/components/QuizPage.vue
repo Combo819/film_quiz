@@ -2,11 +2,11 @@
   <div id="quiz_page">
     <v-app>
       <v-toolbar app>
-        <v-btn color="blue lighten-2" dark depressed round>
+        <v-btn color="blue lighten-2" dark depressed round @click="$store.commit('lastQuiz');resetPanel();">
           <v-icon dark>arrow_back_ios</v-icon>上一题
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="blue lighten-2" dark depressed round v-show="nextShow">
+        <v-btn color="blue lighten-2" dark depressed round v-show="nextShow" @click="$store.commit('nextQuiz');resetPanel();">
           下一题 <v-icon dark>arrow_forward_ios</v-icon>
         </v-btn>
       </v-toolbar>
@@ -14,21 +14,21 @@
         <v-container fluid grid-list-md>
           <v-layout row wrap>
             <v-flex xs12>
-              <p class="text-xs-center display-1 cyan--text">1/50</p>
+              <p class="text-xs-center display-1 cyan--text">{{this.$store.state.currentQuestion + 1}}/50</p>
             </v-flex>
             <v-flex xs12>
-              <v-img src='https://i.pinimg.com/474x/84/59/2a/84592ac8793f46ed53d89ebb747a8fad--kevin-spacey-seven-david-fincher.jpg'></v-img>
+              <v-img :src='getImgSrc()'> </v-img>
             </v-flex>
             <v-flex xs12>
               <v-container fluid grid-list-lg>
                 <v-layout align-center justify-space-around column fill-height>
                   <transition name="fade">
                     <v-flex xs6 v-show="tipShow">
-                      <p class="headline blue-grey--text font-weight-medium">开头2个字为：{{tipMessage}}</p>
+                      <p class="headline blue-grey--text font-weight-medium">开头{{tipLength}}个字为：{{tipMessage}}</p>
                     </v-flex>
                   </transition>
                   <transition name="fade">
-                    <v-flex xs6 v-show="answerShow">
+                    <v-flex xs6 v-if="answerShow">
                       <p class="display-1 blue-grey--text font-weight-medium">{{standardAnswer}}</p>
                     </v-flex>
                   </transition>
@@ -41,13 +41,19 @@
                   <transition name="fade">
                     <v-flex xs6>
                       <v-alert :value="yellowCorrect" color="yellow darken-1" type="success" transition="scale-transition"
-                        outline>对了！</v-alert>
+                        outline>（偷看后）对了！</v-alert>
                     </v-flex>
                   </transition>
                   <transition name="fade">
                     <v-flex xs6>
                       <v-alert :value="redWrong" color="red darken-1" type="success" transition="scale-transition"
                         outline icon='error'>错误！</v-alert>
+                    </v-flex>
+                  </transition>
+                  <transition name="fade">
+                    <v-flex xs6>
+                      <v-alert :value='redAlert' color="red darken-1" type="success" transition="scale-transition"
+                        outline icon='error'>你未能答出此题！</v-alert>
                     </v-flex>
                   </transition>
                   <v-flex xs6>
@@ -104,119 +110,244 @@
 </template>
 
 <script>
-export default {
-  name: "QuizPage",
-  data() {
-    return {
-      peepShow: true, //是否显示偷看按钮
-      verifyShow: true, //是否显示验证按钮
-      surrenderShow: true, //是否显示投降按钮
-      inputShow: true, //是否显示输入框
-      tipShow: false, //是否显示答案提示
-      answerShow: false, //是否显示答案
-      greenCorrect: false, //是否显示完全正确提示框
-      yellowCorrect: false, //是否显示偷看后正确提示框
-      redWrong: false,   //是否显示错误提示框
-      doubanShow: false, //是否显示豆瓣卡
-      keyIn: "", //输入内容绑定
-      standardAnswer: "标准答案",  //标准答案
-      tipMessage: '提示信息',
-      timer: null,  //验证答案错误，错误提示框出现的延时器
-      nextShow: false, //是否显示右上角下一题按钮
-      peeped: false  //是否偷看了
-    };
-  },
-  methods: {
-    /**
-     * 点击投降按钮
-     */
-    surrenderClick() {
-      this.peepShow = false;
-      this.verifyShow = false;
-      this.surrenderShow = false;
-      this.inputShow = false;
-      this.tipShow = false;
-      this.answerShow = true;
-      this.greenCorrect = false;
-      this.yellowCorrect = false;
-      this.redWrong = false;
-      this.doubanShow = true;
-      this.nextShow = true;
+  export default {
+    name: "QuizPage",
+    data() {
+      return {
+        peepShow: true, //是否显示偷看按钮
+        verifyShow: true, //是否显示验证按钮
+        surrenderShow: true, //是否显示投降按钮
+        inputShow: true, //是否显示输入框
+        tipShow: false, //是否显示答案提示
+        answerShow: false, //是否显示答案
+        greenCorrect: false, //是否显示完全正确提示框
+        yellowCorrect: false, //是否显示偷看后正确提示框
+        redWrong: false, //是否显示错误提示框
+        doubanShow: false, //是否显示豆瓣卡
+        keyIn: "", //输入内容绑定
+        standardAnswer: "2001太空漫游", //标准答案
+        tipMessage: '提示信息',
+        tipLength:0, //提示字符的长度
+        timer: null, //验证答案错误，错误提示框出现的延时器
+        nextShow: false, //是否显示右上角下一题按钮
+        peeped: false, //是否偷看了
+        redAlert: false //答不出后显示
+      };
     },
-    /**
-     * 点击verify后验证答案
-     */
-    verifyClick() {
-      if (this.keyIn === this.standardAnswer) {
+    mounted() {
+      console.log(this.$store.state);
+      if (this.$store.state.getFlag) {
+        this.getMovieList();
+      }
+      this.resetPanel();
+      this.getImgScr();
+    },
+    methods: {
+      /**
+       * 点击投降按钮
+       */
+      surrenderClick() {
         this.peepShow = false;
         this.verifyShow = false;
         this.surrenderShow = false;
         this.inputShow = false;
         this.tipShow = false;
         this.answerShow = true;
-        this.greenCorrect = true;
-
+        this.greenCorrect = false;
+        this.yellowCorrect = false;
         this.redWrong = false;
         this.doubanShow = true;
         this.nextShow = true;
-        if (this.peeped) {
-          this.yellowCorrect = true;
-          this.greenCorrect = false;
-        } else {
-          this.yellowCorrect = false;
+        this.redAlert = true;
+        this.$store.commit('surrenderStatus')
+      },
+      /**
+       * 点击verify后验证答案
+       */
+      verifyClick() {
+        if (this.keyIn === this.standardAnswer) {
+          this.peepShow = false;
+          this.verifyShow = false;
+          this.surrenderShow = false;
+          this.inputShow = false;
+          this.tipShow = false;
+          this.answerShow = true;
           this.greenCorrect = true;
+
+          this.redWrong = false;
+          this.doubanShow = true;
+          this.nextShow = true;
+          if (this.peeped) {
+            this.yellowCorrect = true;
+            this.greenCorrect = false;
+            this.$store.commit('halfRight');
+          } else {
+            this.yellowCorrect = false;
+            this.greenCorrect = true;
+            this.$store.commit('allRight');
+
+          }
+        } else {
+          this.verifyShow = true;
+          this.surrenderShow = true;
+          this.inputShow = true;
+          this.answerShow = false;
+          this.greenCorrect = false;
+          this.yellowCorrect = false;
+          this.redWrong = true;
+          this.doubanShow = false;
+          clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
+            this.redWrong = false;
+            clearTimeout(this.timer);
+          }, 1500);
         }
-      } else {
+      },
+      /**
+       * 点击偷看按钮
+       */
+      peepClick() {
+        this.peepShow = false;
         this.verifyShow = true;
         this.surrenderShow = true;
         this.inputShow = true;
+        this.tipShow = true;
         this.answerShow = false;
         this.greenCorrect = false;
         this.yellowCorrect = false;
-        this.redWrong = true;
+        this.redWrong = false;
         this.doubanShow = false;
-        clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
+        this.nextShow = false;
+        this.peeped = true;
+        this.redAlert = false; //答不出后显示
+        this.$store.commit('peepStatus')
+      },
+      /**
+       * 重设页面
+       */
+      resetPanel() {
+        let n = this.$store.state.currentQuestion;
+        console.log(n);
+        this.standardAnswer = this.$store.state.movieList[n].movieName;
+        this.keyIn = '';
+        this.tipLength = Math.ceil(this.standardAnswer.length*0.25);
+        this.tipMessage = this.standardAnswer.substr(0,this.tipLength);
+        console.log('standardAnswer:'+this.standardAnswer);
+        if (this.$store.state.movieList[n].status == -2) {
+            this.peepShow = true, //是否显示偷看按钮
+            this.verifyShow = true, //是否显示验证按钮
+            this.surrenderShow = true, //是否显示投降按钮
+            this.inputShow = true, //是否显示输入框
+            this.tipShow = false, //是否显示答案提示
+            this.answerShow = false, //是否显示答案
+            this.greenCorrect = false, //是否显示完全正确提示框
+            this.yellowCorrect = false, //是否显示偷看后正确提示框
+            this.redWrong = false, //是否显示错误提示框
+            this.doubanShow = false, //是否显示豆瓣卡
+            this.nextShow = false, //是否显示右上角下一题按钮
+            this.peeped = false, //是否偷看了
+            this.redAlert = false //答不出后显示
+        } else if (this.$store.state.movieList[n].status == -1) {
+          this.peepShow = false;
+          this.verifyShow = true;
+          this.surrenderShow = true;
+          this.inputShow = true;
+          this.tipShow = true;
+          this.answerShow = false;
+          this.greenCorrect = false;
+          this.yellowCorrect = false;
           this.redWrong = false;
-          clearTimeout(this.timer);
-        }, 1500);
+          this.doubanShow = false;
+          this.nextShow = false;
+          this.peeped = true;
+          this.redAlert = false //答不出后显示
+        } else if (this.$store.state.movieList[n].status == 0) {
+          this.peepShow = false;
+          this.verifyShow = false;
+          this.surrenderShow = false;
+          this.inputShow = false;
+          this.tipShow = false;
+          this.answerShow = true;
+          this.greenCorrect = false;
+          this.yellowCorrect = false;
+          this.redWrong = false;
+          this.doubanShow = true;
+          this.nextShow = true;
+          this.redAlert = true
+        } else if (this.$store.state.movieList[n].status == 1) {
+          this.peepShow = false;
+          this.verifyShow = false;
+          this.surrenderShow = false;
+          this.inputShow = false;
+          this.tipShow = false;
+          this.answerShow = true;
+          this.yellowCorrect = true, //是否显示偷看后正确提示框
+          this.greenCorrect = false;
+          this.redWrong = false;
+          this.doubanShow = true;
+          this.nextShow = true;
+          this.yellowCorrect = true;
+          this.greenCorrect = false;
+          this.redAlert = false //答不出后显示
+        } else if (this.$store.state.movieList[n].status == 2) {
+          this.peepShow = false;
+          this.verifyShow = false;
+          this.surrenderShow = false;
+          this.inputShow = false;
+          this.tipShow = false;
+          this.answerShow = true;
+          this.yellowCorrect = false, //是否显示偷看后正确提示框
+          this.greenCorrect = true;
+          this.redWrong = false;
+          this.doubanShow = true;
+          this.nextShow = true;
+          this.yellowCorrect = false;
+          this.greenCorrect = true;
+        }
+      },
+      getMovieList() {
+        this.$axios({
+          method: 'get',
+          url: '../static/movieList.json'
+        }).then(Response => {
+          function Moive(id, movieName) {
+            this.id = id;
+            this.fileName = movieName;
+            this.movieName = movieName.substr(0,movieName.indexOf('.'));
+            this.status = -2
+          };
+          for (let i in Response.data) {
+            let movieComponent = new Moive(Response.data[i], i);
+            this.$store.commit('addObject', movieComponent)
+          };
+          this.$store.commit('setGetFlag');
+          console.log('1id:' + this.$store.state.movieList[0].status);
+        }).catch(err => console.log(err));
+      },
+      getImgSrc(){
+        let suffix = this.$store.state.movieList[this.$store.state.currentQuestion].fileName;
+        let imgSrc = '../static/noName/';
+        return imgSrc + suffix
       }
-    },
-    /**
-     * 点击偷看按钮
-     */
-    peepClick() {
-      this.peepShow = false;
-      this.verifyShow = true;
-      this.surrenderShow = true;
-      this.inputShow = true;
-      this.tipShow = true;
-      this.answerShow = false;
-      this.greenCorrect = false;
-      this.yellowCorrect = false;
-      this.redWrong = false;
-      this.doubanShow = false;
-      this.nextShow = false;
-      this.peeped = true;
     }
-  }
-};
+  };
+
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.7s;
-}
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.7s;
+  }
 
-.fade-enter,
+  .fade-enter,
   .fade-leave-to
 
   /* .fade-leave-active below version 2.1.8 */
- {
-  opacity: 0;
-}
+    {
+    opacity: 0;
+  }
 
-#quiz_page {
-}
+  #quiz_page {}
+
 </style>

@@ -32,7 +32,41 @@
 
 <script>
 export default {
-  name: "welcomePage"
+  name: "welcomePage",
+  data(){
+    return{
+    }
+  },
+  mounted(){
+    console.log(this.$store.state);
+    if(this.$store.state.getFlag){
+      this.getMovieList();
+    }
+  },
+  methods:{
+    /**
+     * 读取本地的json，并且把值赋给vuex
+     */
+    getMovieList(){
+      this.$axios({
+        method:'get',
+        url:'../static/movieList.json'
+      }).then(Response => {
+        function Moive(id,movieName){
+          this.id = id;
+          this.fileName = movieName;
+          this.movieName = movieName.substr(0,movieName.indexOf('.'));
+          this.status = -2
+        };
+        for(let i in Response.data){
+          let movieComponent = new Moive(Response.data[i],i);
+          this.$store.commit('addObject',movieComponent)
+        };
+        this.$store.commit('setGetFlag');
+        console.log('1id:' + this.$store.state.movieList[0].status);
+      }).catch(err => console.log(err));
+    }
+  }
 };
 </script>
 
