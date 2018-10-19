@@ -81,7 +81,7 @@ export default {
       let _this = this;
       this.$axios({
         methods:'GET',
-        url:'/apis/v2/movie/subject/2131459',
+        url:'/apis/v2/movie/subject/'+ this.$store.state.movieList[this.$store.state.currentQuestion].id,
       }).then((response) =>{_this.movieData = response.data;_this.postM = response.data.images.small.replace(/s_ratio_poster/,"l_ratio_poster")}).catch(err => console.log(err));
     },
     

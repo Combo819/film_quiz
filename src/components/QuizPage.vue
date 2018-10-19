@@ -14,10 +14,13 @@
         <v-container fluid grid-list-md>
           <v-layout row wrap>
             <v-flex xs12>
-              <p class="text-xs-center display-1 cyan--text">{{this.$store.state.currentQuestion + 1}}/50</p>
+              <p class="text-xs-center display-1 cyan--text">{{this.$store.state.currentQuestion +
+                1}}/{{$store.state.movieList.length}}</p>
             </v-flex>
             <v-flex xs12>
-              <v-img :src='getImgSrc()'> </v-img>
+              <v-img v-if='($store.state.movieList[this.$store.state.currentQuestion].status == -2)||($store.state.movieList[this.$store.state.currentQuestion].status == -1)'
+                :src='getImgSrc()'> </v-img>
+              <v-img v-else :src='getOriginImg()'> </v-img>
             </v-flex>
             <v-flex xs12>
               <v-container fluid grid-list-lg>
@@ -79,14 +82,14 @@
                       <v-card color="grey lighten-4" class="gray--text pa-2" width="300px" v-show="doubanShow">
                         <v-layout>
                           <v-flex xs5>
-                            <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg" height="125px" contain></v-img>
+                            <v-img :src="cardImgSrc" height="125px" contain></v-img>
                           </v-flex>
                           <v-flex xs7>
                             <v-card-title primary-title class="py0">
                               <div>
-                                <div class="headline">大冒险家</div>
-                                <div>导演：刘德华</div>
-                                <div>年份：1996</div>
+                                <div class="headline">{{cardTitle}}</div>
+                                <div>导演：{{cardDirector}}</div>
+                                <div>年份：{{cardYear}}</div>
                               </div>
                             </v-card-title>
                           </v-flex>
@@ -127,11 +130,15 @@
         keyIn: "", //输入内容绑定
         standardAnswer: "2001太空漫游", //标准答案
         tipMessage: '提示信息',
-        tipLength:0, //提示字符的长度
+        tipLength: 0, //提示字符的长度
         timer: null, //验证答案错误，错误提示框出现的延时器
         nextShow: false, //是否显示右上角下一题按钮
         peeped: false, //是否偷看了
-        redAlert: false //答不出后显示
+        redAlert: false, //答不出后显示
+        cardImgSrc:'',
+        cardDirector:'',
+        cardYear:'',
+        cardTitle:'',
       };
     },
     mounted() {
@@ -230,11 +237,12 @@
         console.log(n);
         this.standardAnswer = this.$store.state.movieList[n].movieName;
         this.keyIn = '';
-        this.tipLength = Math.ceil(this.standardAnswer.length*0.25);
-        this.tipMessage = this.standardAnswer.substr(0,this.tipLength);
-        console.log('standardAnswer:'+this.standardAnswer);
+        this.tipLength = Math.ceil(this.standardAnswer.length * 0.25);
+        this.tipMessage = this.standardAnswer.substr(0, this.tipLength);
+        this.getInformationCard();
+        console.log('standardAnswer:' + this.standardAnswer);
         if (this.$store.state.movieList[n].status == -2) {
-            this.peepShow = true, //是否显示偷看按钮
+          this.peepShow = true, //是否显示偷看按钮
             this.verifyShow = true, //是否显示验证按钮
             this.surrenderShow = true, //是否显示投降按钮
             this.inputShow = true, //是否显示输入框
@@ -282,7 +290,7 @@
           this.tipShow = false;
           this.answerShow = true;
           this.yellowCorrect = true, //是否显示偷看后正确提示框
-          this.greenCorrect = false;
+            this.greenCorrect = false;
           this.redWrong = false;
           this.doubanShow = true;
           this.nextShow = true;
@@ -297,7 +305,7 @@
           this.tipShow = false;
           this.answerShow = true;
           this.yellowCorrect = false, //是否显示偷看后正确提示框
-          this.greenCorrect = true;
+            this.greenCorrect = true;
           this.redWrong = false;
           this.doubanShow = true;
           this.nextShow = true;
@@ -313,7 +321,7 @@
           function Moive(id, movieName) {
             this.id = id;
             this.fileName = movieName;
-            this.movieName = movieName.substr(0,movieName.indexOf('.'));
+            this.movieName = movieName.substr(0, movieName.indexOf('.'));
             this.status = -2
           };
           for (let i in Response.data) {
@@ -324,10 +332,27 @@
           console.log('1id:' + this.$store.state.movieList[0].status);
         }).catch(err => console.log(err));
       },
-      getImgSrc(){
+      getImgSrc() {
         let suffix = this.$store.state.movieList[this.$store.state.currentQuestion].fileName;
         let imgSrc = '../static/noName/';
         return imgSrc + suffix
+      },
+      getOriginImg() {
+        let suffix = this.$store.state.movieList[this.$store.state.currentQuestion].fileName;
+        let imgSrc = '../static/original/';
+        return imgSrc + suffix
+      },
+      getInformationCard() {
+        let _this = this;
+        this.$axios({
+          methods: 'GET',
+          url: '/apis/v2/movie/subject/' + this.$store.state.movieList[this.$store.state.currentQuestion].id,
+        }).then((response) => {
+          this.cardImgSrc = response.data.images.small;
+          this.cardDirector = response.data.directors[0].name;
+          this.cardYear = response.data.year;
+          this.cardTitle = response.data.title;
+        }).catch(err => console.log(err));
       }
     }
   };
@@ -347,7 +372,5 @@
     {
     opacity: 0;
   }
-
-  #quiz_page {}
 
 </style>

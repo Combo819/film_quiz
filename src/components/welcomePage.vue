@@ -19,7 +19,7 @@
             </v-flex>
              <v-flex xs11 sm10 md6 lg4>
               <v-card>
-                <v-img aspect-ratio='1' src='https://i.pinimg.com/564x/3e/bb/36/3ebb364a8ac339d06145d71a7f7090a4.jpg'></v-img>
+                <v-img aspect-ratio='1' src='./static/cover/egg.jpg' position='center bottom'></v-img>
                 <v-card-text class="headline text-xs-center text-sm-center text-md-center text-lg-center text-xl-center">egg</v-card-text>
               </v-card>
             </v-flex>
@@ -71,6 +71,4 @@ export default {
 </script>
 
 <style scoped>
-#welcome_page {
-}
 </style>
