@@ -17,12 +17,12 @@
               <p class="text-xs-center display-1 cyan--text">{{this.$store.state.currentQuestion +
                 1}}/{{$store.state.movieList.length}}</p>
             </v-flex>
-            <v-flex xs12>
+            <v-flex xs12 sm12 md6 lg4>
               <v-img v-if='($store.state.movieList[this.$store.state.currentQuestion].status == -2)||($store.state.movieList[this.$store.state.currentQuestion].status == -1)'
                 :src='getImgSrc()'> </v-img>
               <v-img v-else :src='getOriginImg()'> </v-img>
             </v-flex>
-            <v-flex xs12>
+            <v-flex xs12 sm12 md6 lg8>
               <v-container fluid grid-list-lg>
                 <v-layout align-center justify-space-around column fill-height>
                   <transition name="fade">
@@ -79,7 +79,7 @@
                   </v-flex>
                   <transition name="fade">
                     <v-flex xs12>
-                      <v-card color="grey lighten-4" class="gray--text pa-2" width="300px" v-show="doubanShow">
+                      <v-card color="grey lighten-4" class="gray--text pa-2" width="320px" v-show="doubanShow">
                         <v-layout>
                           <v-flex xs5>
                             <v-img :src="cardImgSrc" height="125px" contain></v-img>

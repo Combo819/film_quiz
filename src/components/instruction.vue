@@ -51,7 +51,7 @@
               </v-card>
             </v-flex>
             <v-flex>
-              <v-card>
+              <v-card href='https://combo819.github.io/myPhotoBlog/index.html' target="_blank">
                 <v-card-title primary-title class="headline">
                   早前作品
                 </v-card-title>

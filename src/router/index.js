@@ -5,6 +5,7 @@ import WelcomePage from '@/components/welcomePage'
 import QuizPage from '@/components/QuizPage'
 import moive from '@/components/movie'
 import instruction from '@/components/instruction'
+import scoreboard from '@/components/scoreboard'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/instruction',
       name: 'instrucion',
       component: instruction
+    },
+    {
+      path: '/scoreboard',
+      name: 'scoreboard',
+      component: scoreboard
     }
   ]
 })
