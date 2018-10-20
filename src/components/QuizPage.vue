@@ -108,6 +108,11 @@
           </v-layout>
         </v-container>
       </v-content>
+      <v-footer app>
+        <v-btn color="blue lighten-3" dark depressed :to="{name:'WelcomePage'}">主页</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn color="blue lighten-3" dark depressed :to="{name:'scoreboard'}">积分榜</v-btn>
+      </v-footer>
     </v-app>
   </div>
 </template>

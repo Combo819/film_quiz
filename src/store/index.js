@@ -8,6 +8,8 @@ export default new vuex.Store({
     movieLength: 0,
     movieList: [],
     getFlag: true, // determine whether to get Movie list, if it's false , the getMoiveList function should not be executed.
+    sum:0,
+    allAnswered:false
   },
   mutations: {
     addObject(state, object) {
@@ -39,5 +41,28 @@ export default new vuex.Store({
     surrenderStatus(state){
       state.movieList[state.currentQuestion].status = 0;
     },
+  },
+  getters:{
+    scoreSum(state){
+      for (let i=0;i<state.movieList.length;i++){
+        if(state.movieList[i].status > 0){
+          state.sum += state.movieList[i].status;
+        }
+      }
+      return state.sum
+    },
+    checkallAnswer(state){
+      let flag = false;
+      for (let i=0;i<state.movieList.length;i++){
+        if(state.movieList[i].status < 0){
+          flag = false;
+        }
+        else{
+          flag = true;
+        }
+      }
+      state.allAnswered = state.allAnswered && flag
+      return state.allAnswered
+    }
   }
 })
