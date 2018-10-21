@@ -6,7 +6,7 @@
           <v-layout align-center justify-center row fill-height wrap>
             <v-flex xs11 sm10 md6 lg4>
               <v-card :to="{name:'QuizPage'}">
-                <v-img aspect-ratio='1' src='https://i.pinimg.com/564x/3e/bb/36/3ebb364a8ac339d06145d71a7f7090a4.jpg '></v-img>
+                <v-img aspect-ratio='1' src='./static/cover/sunRise.jpg'></v-img>
                 <v-card-text class="headline text-xs-center text-sm-center text-md-center text-lg-center text-xl-center">游戏</v-card-text>
               </v-card>
             </v-flex>
@@ -38,7 +38,6 @@ export default {
     }
   },
   mounted(){
-    console.log(this.$store.state);
     if(this.$store.state.getFlag){
       this.getMovieList();
     }

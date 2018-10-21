@@ -19,8 +19,11 @@ module.exports = {
     path: config.build.assetsRoot,
     filename: '[name].js',
     publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+      /* ? config.build.assetsPublicPath
+      : config.dev.assetsPublicPath */
+      //https://blog.csdn.net/huang_jin_yi/article/details/78921763
+      ? './' +config.build.assetsPublicPath
+      : './' + config.dev.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
