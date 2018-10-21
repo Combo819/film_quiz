@@ -6,6 +6,7 @@ import QuizPage from '@/components/QuizPage'
 import moive from '@/components/movie'
 import instruction from '@/components/instruction'
 import scoreboard from '@/components/scoreboard'
+import egg from '@/components/egg'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/scoreboard',
       name: 'scoreboard',
       component: scoreboard
+    },
+    {
+      path: '/egg',
+      name: 'egg',
+      component: egg
     }
   ]
 })
