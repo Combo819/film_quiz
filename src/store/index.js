@@ -27,7 +27,7 @@ export default new vuex.Store({
       }
     },
     nextQuiz(state) {
-      if(state.currentQuestion<state.movieList.length){
+      if(state.currentQuestion < state.movieList.length-1){
         state.currentQuestion++;
       }
       else{

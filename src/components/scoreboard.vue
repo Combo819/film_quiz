@@ -30,7 +30,7 @@
             <v-flex xs12 v-if = 'checkallAnswered'>
               <v-card :to="{name:'egg'}">
                 <v-img aspect-ratio='1' src='./static/cover/egg.jpg' position='center bottom'></v-img>
-                <v-card-text class="headline text-xs-center text-sm-center text-md-center text-lg-center text-xl-center">egg</v-card-text>
+                <v-card-text class="headline text-xs-center text-sm-center text-md-center text-lg-center text-xl-center">彩蛋</v-card-text>
               </v-card>
             </v-flex>
           </v-layout>

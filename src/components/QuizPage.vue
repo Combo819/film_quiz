@@ -64,17 +64,17 @@
                   </v-flex>
                   <v-flex xs6>
                     <transition name="fade">
-                      <v-btn depressed round dark color="blue lighten-2" large v-show="verifyShow" @click="verifyClick">verify</v-btn>
+                      <v-btn depressed round dark color="blue lighten-2" large v-show="verifyShow" @click="verifyClick" class="title">验证</v-btn>
                     </transition>
                   </v-flex>
                   <transition name="fade">
                     <v-flex xs6>
-                      <v-btn depressed round dark color="orange lighten-2" large v-show="peepShow" @click="peepClick">peep</v-btn>
+                      <v-btn depressed round dark color="orange lighten-2" large v-show="peepShow" @click="peepClick" class="title">偷看</v-btn>
                     </v-flex>
                   </transition>
                   <v-flex xs6>
                     <transition name="fade">
-                      <v-btn depressed round dark color="red lighten-2" large @click="surrenderClick" v-show="surrenderShow">surrender</v-btn>
+                      <v-btn depressed round dark color="red lighten-2" large @click="surrenderClick" v-show="surrenderShow" class="title">投降</v-btn>
                     </transition>
                   </v-flex>
                   <transition name="fade">
@@ -147,12 +147,11 @@
       };
     },
     mounted() {
-      console.log(this.$store.state);
       if (this.$store.state.getFlag) {
         this.getMovieList();
       }
       this.resetPanel();
-      this.getImgScr();
+      //this.getImgScr();
     },
     methods: {
       /**
@@ -239,13 +238,11 @@
        */
       resetPanel() {
         let n = this.$store.state.currentQuestion;
-        console.log(n);
         this.standardAnswer = this.$store.state.movieList[n].movieName;
         this.keyIn = '';
         this.tipLength = Math.ceil(this.standardAnswer.length * 0.25);
         this.tipMessage = this.standardAnswer.substr(0, this.tipLength);
         this.getInformationCard();
-        console.log('standardAnswer:' + this.standardAnswer);
         if (this.$store.state.movieList[n].status == -2) {
           this.peepShow = true, //是否显示偷看按钮
             this.verifyShow = true, //是否显示验证按钮
@@ -334,7 +331,6 @@
             this.$store.commit('addObject', movieComponent)
           };
           this.$store.commit('setGetFlag');
-          console.log('1id:' + this.$store.state.movieList[0].status);
         }).catch(err => console.log(err));
       },
       getImgSrc() {

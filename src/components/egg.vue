@@ -43,7 +43,7 @@
                     </v-flex>
                     <v-flex xs6>
                       <transition name="fade">
-                        <v-btn depressed round dark color="blue lighten-2" large @click="verifyClick1" v-if='verifyShow1'>verify</v-btn>
+                        <v-btn depressed round dark color="blue lighten-2" large @click="verifyClick1" v-if='verifyShow1' class="title">验证</v-btn>
                       </transition>
                     </v-flex>
                   </v-layout>
@@ -78,7 +78,7 @@
                     </v-flex>
                     <v-flex xs6>
                       <transition name="fade">
-                        <v-btn depressed round dark color="blue lighten-2" large @click="verifyClick2" v-if='verifyShow2'>verify</v-btn>
+                        <v-btn depressed round dark color="blue lighten-2" large @click="verifyClick2" v-if='verifyShow2' class="title">验证</v-btn>
                       </transition>
                     </v-flex>
                   </v-layout>
