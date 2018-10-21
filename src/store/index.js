@@ -27,7 +27,12 @@ export default new vuex.Store({
       }
     },
     nextQuiz(state) {
-      state.currentQuestion++;
+      if(state.currentQuestion<state.movieList.length){
+        state.currentQuestion++;
+      }
+      else{
+        return false
+      }
     },
     allRight(state){
       state.movieList[state.currentQuestion].status = 2;
