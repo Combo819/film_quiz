@@ -76,31 +76,24 @@
       if (this.$store.state.getFlag) {
         this.getMovieList();
       }
-      console.log(this.$store.state.movieList);
     },
     methods: {
       /**
        * 读取本地的json，并且把值赋给vuex
        */
       getMovieList() {
-        this.$axios({
-          method: 'get',
-          url: '../static/movieList.json'
-        }).then(Response => {
-          function Moive(id, movieName) {
-            this.id = id;
-            this.fileName = movieName;
-            this.movieName = movieName.substr(0, movieName.indexOf('.'));
-            this.status = -2
-          };
-          for (let i in Response.data) {
-            let movieComponent = new Moive(Response.data[i], i);
-            this.$store.commit('addObject', movieComponent)
-          };
-          this.$store.commit('setGetFlag');
-        }).catch(err => console.log(err));
+      function Moive(id,movieName){
+          this.id = id;
+          this.fileName = movieName;
+          this.movieName = movieName.substr(0,movieName.indexOf('.'));
+          this.status = -2
+        };
+        for(let i in this.$store.state.movieJson){
+          let movieComponent = new Moive(this.$store.state.movieJson[i],i);
+          this.$store.commit('addObject',movieComponent)
+        };
+        this.$store.commit('setGetFlag');
       },
-      
     },
     computed:{
       allScoreSum(){
