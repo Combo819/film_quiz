@@ -40,12 +40,16 @@
                 <v-card-text>
                   因为新学了vue框架，平时也喜欢看电影，所以弄个网页来练练手。此网页用框架vuetify作为UI美化，外加vue-router,vuex和axios等全家桶。查看源码请点击下面github。其他社交网站也求一波关注。
                 </v-card-text>
+                <transition name="fade">
+                  <img src='../../static/cover/qr_code.jpg' v-show='wechatShow' />
+                </transition>
                 <v-divider></v-divider>
                 <v-card-action>
                   <v-layout align-center justify-space-around row class="pt-3">
-                    <v-btn color="blue lighten-3" dark depressed href='https://github.com/Combo819?tab=repositories' target="_blank">github</v-btn>
-                    <v-btn color="blue lighten-3" dark depressed href='http://baidu.com' target="_blank">weibo</v-btn>
-                    <v-btn color="blue lighten-3" dark depressed href='http://baidu.com' target="_blank">微信</v-btn>
+                    <v-btn color="blue lighten-3" dark depressed href='https://github.com/Combo819?tab=repositories'
+                      target="_blank">github</v-btn>
+                    <v-btn color="blue lighten-3" dark depressed href='https://weibo.com/1957307977' target="_blank">weibo</v-btn>
+                    <v-btn color="blue lighten-3" dark depressed @click='wechatShow=!wechatShow'>微信</v-btn>
                   </v-layout>
                 </v-card-action>
               </v-card>
@@ -55,7 +59,7 @@
                 <v-card-title primary-title class="headline">
                   早前作品
                 </v-card-title>
-                <v-img aspect-ratio='1' src='https://i.pinimg.com/564x/3e/bb/36/3ebb364a8ac339d06145d71a7f7090a4.jpg '></v-img>
+                <v-img aspect-ratio='1' src='./static/cover/previousWork.png'></v-img>
               </v-card>
             </v-flex>
           </v-layout>
@@ -67,11 +71,28 @@
 
 <script>
   export default {
-    name: "instruction"
+    name: "instruction",
+    data() {
+      return {
+        wechatShow: false
+      }
+    }
   };
 
 </script>
 
 <style scoped>
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.7s;
+  }
+
+  .fade-enter,
+  .fade-leave-to
+
+  /* .fade-leave-active below version 2.1.8 */
+    {
+    opacity: 0;
+  }
 
 </style>
