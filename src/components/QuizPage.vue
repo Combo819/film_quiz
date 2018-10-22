@@ -121,6 +121,8 @@
 </template>
 
 <script>
+  import jq from "jquery";
+
   export default {
     name: "QuizPage",
     data() {
@@ -343,15 +345,27 @@
       },
       getInformationCard() {
         let _this = this;
-        this.$axios({
-          methods: 'GET',
-          url: '/apis/v2/movie/subject/' + this.$store.state.movieList[this.$store.state.currentQuestion].id,
-        }).then((response) => {
-          this.cardImgSrc = response.data.images.small;
-          this.cardDirector = response.data.directors[0].name;
-          this.cardYear = response.data.year;
-          this.cardTitle = response.data.title;
-        }).catch(err => console.log(err));
+        jq.ajax({
+          type: "get", //jquey是不支持post方式跨域的
+          async: false,
+          url: "http://api.douban.com/v2/movie/subject/" + this.$store.state.movieList[this.$store.state.currentQuestion]
+            .id, //跨域请求的URL
+          dataType: "jsonp",
+          //传递给请求处理程序，用以获得jsonp回调函数名的参数名(默认为:callback)
+          jsonp: "callback",
+          //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+          jsonpCallback: "success_jsonpCallback",
+          //成功获取跨域服务器上的json数据后,会动态执行这个callback函数
+          success: function (response) {
+            _this.cardImgSrc = response.images.small;
+            _this.cardDirector = response.directors[0].name;
+            _this.cardYear = response.year;
+            _this.cardTitle = response.title;
+          },
+          error: function (err) {
+            console.log(err);
+          }
+        });
       }
     }
   };
