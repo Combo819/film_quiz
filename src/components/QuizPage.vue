@@ -64,17 +64,20 @@
                   </v-flex>
                   <v-flex xs6>
                     <transition name="fade">
-                      <v-btn depressed round dark color="blue lighten-2" large v-show="verifyShow" @click="verifyClick" class="title">验证</v-btn>
+                      <v-btn depressed round dark color="blue lighten-2" large v-show="verifyShow" @click="verifyClick"
+                        class="title">验证</v-btn>
                     </transition>
                   </v-flex>
                   <transition name="fade">
                     <v-flex xs6>
-                      <v-btn depressed round dark color="orange lighten-2" large v-show="peepShow" @click="peepClick" class="title">偷看</v-btn>
+                      <v-btn depressed round dark color="orange lighten-2" large v-show="peepShow" @click="peepClick"
+                        class="title">偷看</v-btn>
                     </v-flex>
                   </transition>
                   <v-flex xs6>
                     <transition name="fade">
-                      <v-btn depressed round dark color="red lighten-2" large @click="surrenderClick" v-show="surrenderShow" class="title">投降</v-btn>
+                      <v-btn depressed round dark color="red lighten-2" large @click="surrenderClick" v-show="surrenderShow"
+                        class="title">投降</v-btn>
                     </transition>
                   </v-flex>
                   <transition name="fade">
@@ -140,10 +143,10 @@
         nextShow: false, //是否显示右上角下一题按钮
         peeped: false, //是否偷看了
         redAlert: false, //答不出后显示
-        cardImgSrc:'',
-        cardDirector:'',
-        cardYear:'',
-        cardTitle:'',
+        cardImgSrc: '',
+        cardDirector: '',
+        cardYear: '',
+        cardTitle: '',
       };
     },
     mounted() {
@@ -316,22 +319,17 @@
         }
       },
       getMovieList() {
-        this.$axios({
-          method: 'get',
-          url: '../static/movieList.json'
-        }).then(Response => {
-          function Moive(id, movieName) {
-            this.id = id;
-            this.fileName = movieName;
-            this.movieName = movieName.substr(0, movieName.indexOf('.'));
-            this.status = -2
-          };
-          for (let i in Response.data) {
-            let movieComponent = new Moive(Response.data[i], i);
-            this.$store.commit('addObject', movieComponent)
-          };
-          this.$store.commit('setGetFlag');
-        }).catch(err => console.log(err));
+        function Moive(id, movieName) {
+          this.id = id;
+          this.fileName = movieName;
+          this.movieName = movieName.substr(0, movieName.indexOf('.'));
+          this.status = -2
+        };
+        for (let i in this.$store.state.movieJson) {
+          let movieComponent = new Moive(this.$store.state.movieJson[i], i);
+          this.$store.commit('addObject', movieComponent)
+        };
+        this.$store.commit('setGetFlag');
       },
       getImgSrc() {
         let suffix = this.$store.state.movieList[this.$store.state.currentQuestion].fileName;
