@@ -128,7 +128,7 @@
         redWrong: false, //是否显示错误提示框
         doubanShow: false, //是否显示豆瓣卡
         keyIn: "", //输入内容绑定
-        standardAnswer: "2001太空漫游", //标准答案
+        standardAnswer: "标准答案", //标准答案
         tipMessage: '提示信息',
         tipLength: 0, //提示字符的长度
         timer: null, //验证答案错误，错误提示框出现的延时器

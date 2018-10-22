@@ -43,7 +43,7 @@
                 <v-divider></v-divider>
                 <v-card-action>
                   <v-layout align-center justify-space-around row class="pt-3">
-                    <v-btn color="blue lighten-3" dark depressed href='http://baidu.com' target="_blank">github</v-btn>
+                    <v-btn color="blue lighten-3" dark depressed href='https://github.com/Combo819?tab=repositories' target="_blank">github</v-btn>
                     <v-btn color="blue lighten-3" dark depressed href='http://baidu.com' target="_blank">weibo</v-btn>
                     <v-btn color="blue lighten-3" dark depressed href='http://baidu.com' target="_blank">微信</v-btn>
                   </v-layout>

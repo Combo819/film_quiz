@@ -18,7 +18,7 @@
               </v-card>
             </v-flex>
              <v-flex xs11 sm10 md6 lg4>
-              <v-card>
+              <v-card :to="{name:'scoreboard'}">
                 <v-img aspect-ratio='1' src='./static/cover/egg.jpg' position='center bottom'></v-img>
                 <v-card-text class="headline text-xs-center text-sm-center text-md-center text-lg-center text-xl-center">egg</v-card-text>
               </v-card>
