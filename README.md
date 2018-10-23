@@ -38,7 +38,9 @@ If you want to change the images and film list by yourself, just clone this repo
 
 ## Difficulty
 + At first, I put the movielist into static/movieList.json and get the json with axios. However, Error occurred when the vue-cli was built. That's because Chrome refuse to load local json via axios. I fix the problem by putting movielist into the vuex file.
-+ The data of infomation card and movie page is get from a douban api. There is CORS problems when getting data from douban api. At first, I use proxy. But it no longer work after the program is built. So I use ajax with jsonp(see:[jianshu](https://www.jianshu.com/p/1f32c9a96064) instead of axios to get data from douban api. What's more, do not request the douban api too frequently, which may lead to visit limitaion.
++ The data of infomation card and movie page is get from a douban api. There is CORS problems when getting data from douban api. At first, I use proxy. But it no longer work after the program is built. So I use ajax with jsonp(see:[jianshu](https://www.jianshu.com/p/1f32c9a96064)) instead of axios to get data from douban api. What's more, do not request the douban api too frequently, which may lead to visit limitaion.
+<br>
+<br>
 
 # 猜电影名游戏
 
@@ -52,4 +54,4 @@ If you want to change the images and film list by yourself, just clone this repo
 
 ## 遇到的困难
 + 刚开始，我把电影名单的json文件放到static/movieList.json，　再通过axios请求。可是，在vue-cli被编译后，这个方法就会出错，因为Chrome浏览器无法读取本地的json。因此电影名单只能放到vuex的store里面去。
-+ 电影的数据是来自豆瓣的api，请求这个api有跨域问题。刚开始我有代理，但是vue-cli编译后代理就没法用了。所以我引入jquery使用ajax和jsonp（参考：[简书](https://www.jianshu.com/p/1f32c9a96064）。另外，不要访问api泰国频繁，会有访问限制。
++ 电影的数据是来自豆瓣的api，请求这个api有跨域问题。刚开始我有代理，但是vue-cli编译后代理就没法用了。所以我引入jquery使用ajax和jsonp（参考：[简书](https://www.jianshu.com/p/1f32c9a96064))。另外，不要访问api太过频繁，会有访问限制。
