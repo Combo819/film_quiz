@@ -10,7 +10,7 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
+    proxyTable: {/* 
       '/apis': {
         // 测试环境
         target: 'https://api.douban.com/',  // 接口域名
@@ -18,7 +18,7 @@ module.exports = {
         pathRewrite: {
             '^/apis': ''   //需要rewrite重写的,
         }              
-    }
+    } */
     },
 
     // Various Dev Server settings
