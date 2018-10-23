@@ -92,7 +92,7 @@
         jq.ajax({
           type: "get", //jquey是不支持post方式跨域的
           async: false,
-          url: "http://api.douban.com/v2/movie/subject/" + this.$store.state.movieList[this.$store.state.currentQuestion]
+          url: "https://api.douban.com/v2/movie/subject/" + this.$store.state.movieList[this.$store.state.currentQuestion]
             .id,
           dataType: "jsonp",
           jsonp: "callback",

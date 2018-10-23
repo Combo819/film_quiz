@@ -335,12 +335,12 @@
       },
       getImgSrc() {
         let suffix = this.$store.state.movieList[this.$store.state.currentQuestion].fileName;
-        let imgSrc = '../static/noName/';
+        let imgSrc = './static/noName/'; //此处不该写成 ../static  否则开发环境和本地使用都没问题，上传github后就会漏掉repository的名字
         return imgSrc + suffix
       },
       getOriginImg() {
         let suffix = this.$store.state.movieList[this.$store.state.currentQuestion].fileName;
-        let imgSrc = '../static/original/';
+        let imgSrc = './static/original/'; //此处不该写成 ../static  否则开发环境和本地使用都没问题，上传github后就会漏掉repository的名字
         return imgSrc + suffix
       },
       getInformationCard() {
@@ -348,7 +348,7 @@
         jq.ajax({
           type: "get", //jquey是不支持post方式跨域的
           async: false,
-          url: "http://api.douban.com/v2/movie/subject/" + this.$store.state.movieList[this.$store.state.currentQuestion]
+          url: "https://api.douban.com/v2/movie/subject/" + this.$store.state.movieList[this.$store.state.currentQuestion]
             .id, //跨域请求的URL
           dataType: "jsonp",
           //传递给请求处理程序，用以获得jsonp回调函数名的参数名(默认为:callback)
