@@ -1,6 +1,7 @@
 # film_quiz
 
 > a webpage for film name quiz based on vue-cli and vuetify.
+<br>preview: https://combo819.github.io/film_quiz/#/
 
 ## Build Setup
 
